@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "contracts.apps.ContractsConfig",
     "products.apps.ServicesConfig",
+    "ads.apps.AdsConfig",
 ]
 
 MIDDLEWARE = [

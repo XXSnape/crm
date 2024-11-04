@@ -20,3 +20,6 @@ class Product(models.Model):
             "products:product_details",
             kwargs={"pk": self.pk},
         )
+
+    def __str__(self) -> str:
+        return f"({self.pk}) {self.name}"

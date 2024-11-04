@@ -23,7 +23,7 @@ class ProductDeleteView(DeleteView):
 
 
 class ProductsListView(ListView):
-    model = Product
+    queryset = Product.objects.only("name").all()
     template_name = "products/products-list.html"
     context_object_name = "products"
 
