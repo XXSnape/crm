@@ -6,6 +6,10 @@ from ads.models import Ads
 
 
 class Lead(models.Model):
+    class Meta:
+        verbose_name = "Клиенты"
+        verbose_name_plural = "Клиенты"
+
     first_name = models.CharField(max_length=64, verbose_name="Имя")
     last_name = models.CharField(max_length=64, verbose_name="Фамилия")
     phone = models.CharField(

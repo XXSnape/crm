@@ -9,6 +9,10 @@ from products.models import Product
 
 
 class Ads(models.Model):
+    class Meta:
+        verbose_name = "Реклама"
+        verbose_name_plural = "Рекламы"
+
     name = models.CharField(max_length=128, verbose_name="Название")
     promotion_channel = models.CharField(
         max_length=128, verbose_name="Канал продвижения"

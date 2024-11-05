@@ -19,6 +19,8 @@ class Customer(models.Model):
                 violation_error_message="Клиент уже подписал этот контракт",
             ),
         )
+        verbose_name = "Активный клиент"
+        verbose_name_plural = "Активные клиенты"
 
     def get_absolute_url(self):
         return reverse(
@@ -27,4 +29,4 @@ class Customer(models.Model):
         )
 
     def __str__(self) -> str:
-        return f"{self.lead.name}"
+        return f"{self.lead.first_name} {self.lead.last_name}"

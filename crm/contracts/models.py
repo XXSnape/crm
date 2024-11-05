@@ -23,6 +23,10 @@ def validate_end_date(value: datetime):
 
 
 class Contract(models.Model):
+    class Meta:
+        verbose_name = "Контракт"
+        verbose_name_plural = "Контракты"
+
     name = models.CharField(max_length=128, verbose_name="Название")
     product = models.ForeignKey(
         Product,

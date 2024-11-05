@@ -27,6 +27,7 @@ urlpatterns = [
     path("ads/", include("ads.urls")),
     path("leads/", include("leads.urls")),
     path("customers/", include("customers.urls")),
+    path("accounts/", include("accounts.urls")),
 ]
 
 if settings.DEBUG:

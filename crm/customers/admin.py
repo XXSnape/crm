@@ -1,3 +1,13 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Customer
+
+
+@admin.register(Customer)
+class CustomersAdmin(admin.ModelAdmin):
+    list_display = "lead", "contract"
+    list_display_links = ("lead",)
+    list_editable = ("contract",)
+
+    def get_queryset(self, request):
+        return Customer.objects.select_related("lead", "contract")
