@@ -17,7 +17,9 @@ class Ads(models.Model):
         max_digits=10,
         decimal_places=2,
         verbose_name="Бюджет",
-        validators=[MinValueValidator(Decimal("0.01"))],
+        validators=[
+            MinValueValidator(Decimal("0"), message="Минимальное значение - 0")
+        ],
     )
     product = ForeignKey(
         Product, on_delete=models.CASCADE, related_name="ads", verbose_name="Услуга"
