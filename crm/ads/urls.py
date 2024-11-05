@@ -9,4 +9,5 @@ urlpatterns = [
     path("<int:pk>/", views.AdsDetailView.as_view(), name="ads_details"),
     path("<int:pk>/delete/", views.AdsDeleteView.as_view(), name="ads_delete"),
     path("<int:pk>/edit/", views.AdsUpdateView.as_view(), name="ads_update"),
+    path("statistic/", views.StatisticsView.as_view(), name="statistics"),
 ]
