@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
+
+from celery.schedules import crontab
 
 # from django.conf.global_settings import LOGIN_URL
 
@@ -151,4 +154,14 @@ LOGGING = {
         }
     },
     "loggers": {"django.db.backends": {"level": "DEBUG", "handlers": ["console"]}},
+}
+
+CELERY_ENABLE_UTC = True
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+CELERY_BEAT_SCHEDULE = {
+    "create": {
+        "task": "contracts.tasks.archive_expired_contracts",
+        "schedule": crontab(minute="0", hour="0"),
+    }
 }
