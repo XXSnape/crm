@@ -14,7 +14,7 @@ from .models import Contract
 
 class ContractsListView(PermissionRequiredMixin, ListView):
     permission_required = "contracts.view_contract"
-    queryset = Contract.objects.only("name").all()
+    queryset = Contract.unarchived.only("name")
     template_name = "contracts/contracts-list.html"
     context_object_name = "contracts"
 

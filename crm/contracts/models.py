@@ -22,14 +22,19 @@ def validate_end_date(value: datetime):
     return value
 
 
+class UnarchivedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(archived=Contract.Status.UNARCHIVED)
+
+
 class Contract(models.Model):
     class Meta:
         verbose_name = "Контракт"
         verbose_name_plural = "Контракты"
 
     class Status(models.IntegerChoices):
-        ARCHIVED = 0, "Действителен"
-        UNARCHIVED = 1, "Срок действия истёк"
+        ARCHIVED = 1, "Недействителен"
+        UNARCHIVED = 0, "Действителен"
 
     name = models.CharField(max_length=128, verbose_name="Название")
     product = models.ForeignKey(
@@ -51,9 +56,16 @@ class Contract(models.Model):
         verbose_name="Сумма",
     )
     file = models.FileField(null=True, upload_to=contract_path, verbose_name="Документ")
-    archived = models.BooleanField(choices=Status.choices, default=Status.UNARCHIVED)
+    archived = models.BooleanField(
+        choices=tuple(map(lambda c: (bool(c[0]), c[1]), Status.choices)),
+        default=bool(Status.UNARCHIVED),
+        verbose_name="Срок действия",
+    )
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+
+    unarchived = UnarchivedManager()
+    objects = models.Manager()
 
     def get_absolute_url(self):
         return reverse(

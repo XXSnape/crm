@@ -6,5 +6,5 @@ from .models import Contract
 class ContractForm(forms.ModelForm):
     class Meta:
         model = Contract
-        fields = "__all__"
-        widgets = {"end_date": forms.DateTimeInput(attrs={"type": "datetime-local"})}
+        fields = "name", "product", "end_date", "cost", "file"
+        widgets = {"end_date": forms.DateTimeInput(attrs={"type": "date"})}

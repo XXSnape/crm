@@ -7,6 +7,8 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
+
+from contracts.models import Contract
 from .models import Customer
 
 
@@ -21,7 +23,9 @@ class CustomersListView(PermissionRequiredMixin, ListView):
 
 class CustomerCreateView(PermissionRequiredMixin, CreateView):
     permission_required = "customers.add_customer"
-    queryset = Customer.objects.select_related("lead", "contract")
+    queryset = Customer.objects.select_related("lead", "contract").filter(
+        contract__archived=Contract.Status.UNARCHIVED
+    )
     fields = "__all__"
     success_url = reverse_lazy("customers:customers_list")
     template_name = "customers/customers-create.html"
