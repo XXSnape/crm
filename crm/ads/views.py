@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Count, Sum
 from django.db.models.functions import Coalesce
 from django.http import HttpRequest, HttpResponse
@@ -20,31 +21,36 @@ from leads.models import Lead
 from .models import Ads
 
 
-class AdsListView(ListView):
+class AdsListView(PermissionRequiredMixin, ListView):
+    permission_required = "ads.view_ads"
     queryset = Ads.objects.only("name").all()
     template_name = "ads/ads-list.html"
     context_object_name = "ads"
 
 
-class AdsCreateView(CreateView):
+class AdsCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = "ads.add_ads"
     queryset = Ads.objects.select_related("product")
     fields = "__all__"
     success_url = reverse_lazy("ads:ads_list")
     template_name = "ads/ads-create.html"
 
 
-class AdsDeleteView(DeleteView):
+class AdsDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = "ads.delete_ads"
     model = Ads
     success_url = reverse_lazy("ads:ads_list")
     template_name = "ads/ads-delete.html"
 
 
-class AdsDetailView(DetailView):
+class AdsDetailView(PermissionRequiredMixin, DetailView):
+    permission_required = "ads.view_ads"
     queryset = Ads.objects.select_related("product")
     template_name = "ads/ads-detail.html"
 
 
-class AdsUpdateView(UpdateView):
+class AdsUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "ads.change_ads"
     queryset = Ads.objects.select_related("product")
     fields = "__all__"
     template_name = "ads/ads-edit.html"

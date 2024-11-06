@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from accounts.views import IndexView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -28,6 +29,7 @@ urlpatterns = [
     path("leads/", include("leads.urls")),
     path("customers/", include("customers.urls")),
     path("accounts/", include("accounts.urls")),
+    path("", IndexView.as_view(), name="index"),
 ]
 
 if settings.DEBUG:

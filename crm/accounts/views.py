@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.db.models import Count
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 
 from ads.models import Ads
@@ -12,6 +13,10 @@ from products.models import Product
 class LoginUser(LoginView):
     form_class = AuthenticationForm
     template_name = "registration/login.html"
+
+
+class Logout(LoginView):
+    next_page = reverse_lazy("accounts:login")
 
 
 class IndexView(TemplateView):
