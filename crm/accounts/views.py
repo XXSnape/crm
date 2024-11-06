@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models import Count
-from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 
 from ads.models import Ads
@@ -15,11 +15,15 @@ class LoginUser(LoginView):
     template_name = "registration/login.html"
 
 
-class Logout(LoginView):
-    next_page = reverse_lazy("accounts:login")
+class MyLogoutView(LogoutView):
+
+    http_method_names = ["get", "post"]
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 
-class IndexView(TemplateView):
+class IndexView(LoginRequiredMixin, TemplateView):
     template_name = "users/index.html"
 
     def get_context_data(self, **kwargs):

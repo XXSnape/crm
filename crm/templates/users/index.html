@@ -11,6 +11,11 @@
                 </h5>
                 <i class="fas fa-microchip float-end"></i>
                 <p class="card-text fw-bold fs-1">{{ products_count }}</p>
+                {% if not perms.products.view_product %}
+                    <h6 style="color:red">Только маркетолог может смотреть подробности</h6>
+                {% else %}
+                    <h6 style="color:green">Нажмите, чтобы узнать подробнее</h6>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -22,6 +27,11 @@
                 </h5>
                 <i class="fas fa-ad float-end"></i>
                 <p class="card-text fw-bold fs-1">{{ advertisements_count }}</p>
+                {% if not perms.ads.view_ads %}
+                    <h6 style="color:red">Только маркетолог может смотреть подробности</h6>
+                {% else %}
+                    <h6 style="color:green">Нажмите, чтобы узнать подробнее</h6>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -33,6 +43,11 @@
                 </h5>
                 <i class="fas fa-user-clock float-end"></i>
                 <p class="card-text fw-bold fs-1">{{ leads_count }}</p>
+                {% if not perms.leads.view_lead %}
+                    <h6 style="color:red">Только менеджер и оператор могут смотреть подробности</h6>
+                {% else %}
+                    <h6 style="color:green">Нажмите, чтобы узнать подробнее</h6>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -44,6 +59,11 @@
                 </h5>
                 <i class="fas fa-user-check float-end"></i>
                 <p class="card-text fw-bold fs-1">{{ customers_count }}</p>
+                {% if not perms.customers.view_customer %}
+                    <h6 style="color:red">Только менеджер может смотреть подробности</h6>
+                {% else %}
+                    <h6 style="color:green">Нажмите, чтобы узнать подробнее</h6>
+                {% endif %}
             </div>
         </div>
     </div>

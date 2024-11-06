@@ -27,6 +27,10 @@ class Contract(models.Model):
         verbose_name = "Контракт"
         verbose_name_plural = "Контракты"
 
+    class Status(models.IntegerChoices):
+        ARCHIVED = 0, "Действителен"
+        UNARCHIVED = 1, "Срок действия истёк"
+
     name = models.CharField(max_length=128, verbose_name="Название")
     product = models.ForeignKey(
         Product,
@@ -47,6 +51,7 @@ class Contract(models.Model):
         verbose_name="Сумма",
     )
     file = models.FileField(null=True, upload_to=contract_path, verbose_name="Документ")
+    archived = models.BooleanField(choices=Status.choices, default=Status.UNARCHIVED)
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 

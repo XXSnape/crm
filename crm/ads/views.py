@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.db.models import Count, Sum
 from django.db.models.functions import Coalesce
 from django.http import HttpRequest, HttpResponse
@@ -56,7 +56,7 @@ class AdsUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = "ads/ads-edit.html"
 
 
-class StatisticsView(View):
+class StatisticsView(LoginRequiredMixin, View):
     def get(self, request: HttpRequest) -> HttpResponse:
         ads_models = Ads.objects.select_related("product").all()
         ads = []
