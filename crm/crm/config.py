@@ -1,10 +1,14 @@
-from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
+from pydantic_settings import BaseSettings
 
 load_dotenv()
 
 
 class UsersSettings(BaseSettings):
+    """
+    Класс для настройки данных о пользователях
+    """
+
     ADMIN_USERNAME: str
     ADMIN_PASSWORD: str
     OPERATOR_USERNAME: str
@@ -38,16 +42,22 @@ class DBSettings(BaseSettings):
 
 
 class RedisSettings(BaseSettings):
+    """Класс для настройки редиса"""
+
     REDIS_HOST: str
 
     @property
     def redis_url(self) -> str:
+        """
+        Возвращает строку для подключения к редису
+        :return:
+        """
         return f"redis://{self.REDIS_HOST}:6379/0"
 
 
 class Settings(BaseSettings):
     """
-    Класс с настройками телеграма, api и базы данных
+    Класс с настройками базы данных, редиса и пользователей
     """
 
     DB: DBSettings = DBSettings()

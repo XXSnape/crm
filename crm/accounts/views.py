@@ -1,32 +1,49 @@
+from ads.models import Ads
+from customers.models import Customer
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models import Count
+from django.http import HttpRequest, HttpResponse
 from django.views.generic import TemplateView
-
-from ads.models import Ads
-from customers.models import Customer
 from leads.models import Lead
 from products.models import Product
 
 
 class LoginUser(LoginView):
+    """Авторизовывает пользователя в системе"""
+
     form_class = AuthenticationForm
     template_name = "registration/login.html"
 
 
 class MyLogoutView(LogoutView):
+    """Разлогинивает пользователя из системы"""
 
     http_method_names = ["get", "post"]
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        """
+        Перенаправляет метод запроса get на post
+
+        :param request: HttpRequest
+
+        :return:
+        """
         return self.post(request, *args, **kwargs)
 
 
 class IndexView(LoginRequiredMixin, TemplateView):
+    """Отображает главную страницу"""
+
     template_name = "users/index.html"
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> dict:
+        """
+        Собирает статистику о количестве услуг, реклам, потенциальных клиентов
+
+        :return: расширенный словарь с данными
+        """
         context = super().get_context_data(**kwargs)
         data = [
             ["products_count", Product],

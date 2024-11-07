@@ -2,11 +2,17 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group, Permission
 from django.core.management.base import BaseCommand
+
 from crm.config import config
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
+        """
+        Создает супер-пользователя,
+        оператора, маркетолога и менеджера.
+        Разделяет их на группы и назначает им права.
+        """
         User = get_user_model()
         if User.objects.filter(username=config.USERS.ADMIN_USERNAME).exists():
             return

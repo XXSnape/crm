@@ -6,6 +6,8 @@ from django.urls import reverse
 
 
 class Product(models.Model):
+    """Модель услуги"""
+
     class Meta:
         verbose_name = "Услуга"
         verbose_name_plural = "Услуги"
@@ -20,10 +22,12 @@ class Product(models.Model):
     )
 
     def get_absolute_url(self):
+        """Генерирует ссылку для перехода к деталям модели"""
         return reverse(
             "products:product_details",
             kwargs={"pk": self.pk},
         )
 
     def __str__(self) -> str:
+        """Генерирует строку для отображения"""
         return f"({self.pk}) {self.name}"

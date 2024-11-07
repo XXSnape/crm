@@ -4,11 +4,12 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import ForeignKey
 from django.urls import reverse
-
 from products.models import Product
 
 
 class Ads(models.Model):
+    """Модель рекламной компании"""
+
     class Meta:
         verbose_name = "Реклама"
         verbose_name_plural = "Рекламы"
@@ -30,10 +31,12 @@ class Ads(models.Model):
     )
 
     def get_absolute_url(self):
+        """Генерирует ссылку для перехода к деталям модели"""
         return reverse(
             "ads:ads_details",
             kwargs={"pk": self.pk},
         )
 
     def __str__(self) -> str:
+        """Генерирует строку для отображения"""
         return f"({self.pk}) {self.name}"

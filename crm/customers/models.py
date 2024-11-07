@@ -1,11 +1,12 @@
+from contracts.models import Contract
 from django.db import models
 from django.urls import reverse
-
-from contracts.models import Contract
 from leads.models import Lead
 
 
 class Customer(models.Model):
+    """Модель активного клиента"""
+
     lead = models.ForeignKey(Lead, on_delete=models.CASCADE, verbose_name="Клиент")
     contract = models.ForeignKey(
         Contract, on_delete=models.CASCADE, verbose_name="Контракт"
@@ -23,10 +24,12 @@ class Customer(models.Model):
         verbose_name_plural = "Активные клиенты"
 
     def get_absolute_url(self):
+        """Генерирует ссылку для перехода к деталям модели"""
         return reverse(
             "customers:customer_details",
             kwargs={"pk": self.pk},
         )
 
     def __str__(self) -> str:
+        """Генерирует строку для отображения"""
         return f"{self.lead.first_name} {self.lead.last_name}"

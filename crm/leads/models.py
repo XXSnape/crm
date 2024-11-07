@@ -1,11 +1,12 @@
+from ads.models import Ads
 from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse
 
-from ads.models import Ads
-
 
 class Lead(models.Model):
+    """Модель потенциального клиента"""
+
     class Meta:
         verbose_name = "Клиенты"
         verbose_name_plural = "Клиенты"
@@ -32,10 +33,12 @@ class Lead(models.Model):
     )
 
     def get_absolute_url(self):
+        """Генерирует ссылку для перехода к деталям модели"""
         return reverse(
             "leads:lead_details",
             kwargs={"pk": self.pk},
         )
 
     def __str__(self) -> str:
+        """Генерирует строку для отображения"""
         return f"{self.last_name} {self.first_name}"

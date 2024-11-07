@@ -1,6 +1,8 @@
 from decimal import Decimal
 
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from contracts.models import Contract
+from customers.models import Customer
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Count, Sum
 from django.db.models.functions import Coalesce
 from django.http import HttpRequest, HttpResponse
@@ -8,20 +10,20 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import (
-    ListView,
     CreateView,
-    DetailView,
-    UpdateView,
     DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
 )
-
-from contracts.models import Contract
-from customers.models import Customer
 from leads.models import Lead
+
 from .models import Ads
 
 
 class AdsListView(PermissionRequiredMixin, ListView):
+    """Отображает рекламные компании"""
+
     permission_required = "ads.view_ads"
     queryset = Ads.objects.only("name").all()
     template_name = "ads/ads-list.html"
@@ -29,6 +31,8 @@ class AdsListView(PermissionRequiredMixin, ListView):
 
 
 class AdsCreateView(PermissionRequiredMixin, CreateView):
+    """Создает рекламную компанию"""
+
     permission_required = "ads.add_ads"
     queryset = Ads.objects.select_related("product")
     fields = "__all__"
@@ -37,6 +41,8 @@ class AdsCreateView(PermissionRequiredMixin, CreateView):
 
 
 class AdsDeleteView(PermissionRequiredMixin, DeleteView):
+    """Удаляет рекламную компанию"""
+
     permission_required = "ads.delete_ads"
     model = Ads
     success_url = reverse_lazy("ads:ads_list")
@@ -44,12 +50,16 @@ class AdsDeleteView(PermissionRequiredMixin, DeleteView):
 
 
 class AdsDetailView(PermissionRequiredMixin, DetailView):
+    """Отображает детали рекламной компании"""
+
     permission_required = "ads.view_ads"
     queryset = Ads.objects.select_related("product")
     template_name = "ads/ads-detail.html"
 
 
 class AdsUpdateView(PermissionRequiredMixin, UpdateView):
+    """Обновляет рекламную компанию"""
+
     permission_required = "ads.change_ads"
     queryset = Ads.objects.select_related("product")
     fields = "__all__"
@@ -57,7 +67,18 @@ class AdsUpdateView(PermissionRequiredMixin, UpdateView):
 
 
 class StatisticsView(LoginRequiredMixin, View):
+    """Отображает статистику о рекламных компаниях"""
+
     def get(self, request: HttpRequest) -> HttpResponse:
+        """
+        Проходится по всем рекламным компаниям,
+        считает клиентов, привлеченных компанией,
+        находит контракты, заключенные с услугой, которая заказывала рекламу,
+        делит стоимость всех подписанных контрактов на бюджет рекламы
+
+        :param request: HttpRequest
+        :return: HttpResponse
+        """
         ads_models = Ads.objects.select_related("product").all()
         ads = []
         for ad in ads_models:
@@ -67,8 +88,6 @@ class StatisticsView(LoginRequiredMixin, View):
             contracts_pk = Contract.objects.filter(
                 product_id=ad.product_id
             ).values_list("pk", flat=True)
-
-            print("c_pk", contracts_pk)
             result = (
                 Customer.objects.filter(contract_id__in=contracts_pk)
                 .prefetch_related("contract")

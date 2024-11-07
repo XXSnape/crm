@@ -5,6 +5,8 @@ from .models import Customer
 
 @admin.register(Customer)
 class CustomersAdmin(admin.ModelAdmin):
+    """Кастомизирует отображение модели активного клиента в админке"""
+
     list_display = "lead", "contract"
     list_display_links = ("lead",)
     list_editable = ("contract",)

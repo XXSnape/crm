@@ -13,6 +13,7 @@ services:
       - ./db/:/var/lib/postgresql/data
     env_file:
       - ./.env
+
   app:
     container_name: crm
     build: .

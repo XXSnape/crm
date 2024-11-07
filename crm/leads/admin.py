@@ -5,6 +5,8 @@ from .models import Lead
 
 @admin.register(Lead)
 class LeadsAdmin(admin.ModelAdmin):
+    """Кастомизирует отображение модели потенциального клиента в админке"""
+
     list_display = "first_name", "last_name", "phone", "email", "ad"
     list_editable = ("ad",)
 

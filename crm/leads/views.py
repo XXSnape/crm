@@ -1,16 +1,19 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import (
-    ListView,
     CreateView,
-    DetailView,
-    UpdateView,
     DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
 )
+
 from .models import Lead
 
 
 class LeadsListView(PermissionRequiredMixin, ListView):
+    """Отображает потенциальных клиентов"""
+
     permission_required = "leads.view_lead"
     queryset = Lead.objects.only("first_name", "last_name").all()
     template_name = "leads/leads-list.html"
@@ -18,6 +21,8 @@ class LeadsListView(PermissionRequiredMixin, ListView):
 
 
 class LeadCreateView(PermissionRequiredMixin, CreateView):
+    """Создает потенциального клиента"""
+
     permission_required = "leads.add_lead"
     queryset = Lead.objects.select_related("ad")
     fields = "__all__"
@@ -26,6 +31,8 @@ class LeadCreateView(PermissionRequiredMixin, CreateView):
 
 
 class LeadDeleteView(PermissionRequiredMixin, DeleteView):
+    """Удаляет потенциального клиента"""
+
     permission_required = "leads.delete_lead"
     model = Lead
     success_url = reverse_lazy("leads:leads_list")
@@ -33,12 +40,16 @@ class LeadDeleteView(PermissionRequiredMixin, DeleteView):
 
 
 class LeadDetailView(PermissionRequiredMixin, DetailView):
+    """Отображает детали потенциального клиента"""
+
     permission_required = "leads.view_lead"
     queryset = Lead.objects.select_related("ad")
     template_name = "leads/leads-detail.html"
 
 
 class LeadUpdateView(PermissionRequiredMixin, UpdateView):
+    """Обновляет потенциального клиента"""
+
     permission_required = "leads.change_lead"
     queryset = Lead.objects.select_related("ad")
     fields = "__all__"

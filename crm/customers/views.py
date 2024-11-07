@@ -1,18 +1,20 @@
+from contracts.models import Contract
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import (
-    ListView,
     CreateView,
-    DetailView,
-    UpdateView,
     DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
 )
 
-from contracts.models import Contract
 from .models import Customer
 
 
 class CustomersListView(PermissionRequiredMixin, ListView):
+    """Отображает активных клиентов"""
+
     permission_required = "customers.view_customer"
     queryset = Customer.objects.select_related("lead").only(
         "lead__last_name", "lead__first_name"
@@ -22,6 +24,8 @@ class CustomersListView(PermissionRequiredMixin, ListView):
 
 
 class CustomerCreateView(PermissionRequiredMixin, CreateView):
+    """Создает активного клиента"""
+
     permission_required = "customers.add_customer"
     queryset = Customer.objects.select_related("lead", "contract").filter(
         contract__archived=Contract.Status.UNARCHIVED
@@ -32,6 +36,8 @@ class CustomerCreateView(PermissionRequiredMixin, CreateView):
 
 
 class CustomerDeleteView(PermissionRequiredMixin, DeleteView):
+    """Удаляет активного клиента"""
+
     permission_required = "customers.delete_customer"
     model = Customer
     success_url = reverse_lazy("customers:customers_list")
@@ -39,12 +45,16 @@ class CustomerDeleteView(PermissionRequiredMixin, DeleteView):
 
 
 class CustomerDetailView(PermissionRequiredMixin, DetailView):
+    """Отображает детали активного клиента"""
+
     permission_required = "customers.view_customer"
     queryset = Customer.objects.select_related("lead")
     template_name = "customers/customers-detail.html"
 
 
 class CustomerUpdateView(PermissionRequiredMixin, UpdateView):
+    """Обновляет активного клиента"""
+
     permission_required = "customers.change_customer"
     queryset = Customer.objects.select_related("lead", "contract")
     fields = "__all__"

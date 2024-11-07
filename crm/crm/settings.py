@@ -169,8 +169,4 @@ CELERY_BEAT_SCHEDULE = {
         "task": "contracts.tasks.archive_expired_contracts",
         "schedule": crontab(minute="0", hour="0"),
     },
-    'g': {
-        "task": "contracts.tasks.x",
-        "schedule": 10,
-    },
 }
