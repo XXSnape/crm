@@ -1,4 +1,8 @@
+import os
+import shutil
+
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView,
@@ -31,6 +35,10 @@ class ContractDeleteView(PermissionRequiredMixin, DeleteView):
     model = Contract
     success_url = reverse_lazy("contracts:contracts_list")
     template_name = "contracts/contracts-delete.html"
+
+    def form_valid(self, form):
+        shutil.rmtree(self.object.file.path.rsplit("/", 1)[0])
+        return super().form_valid(form)
 
 
 class ContractDetailView(PermissionRequiredMixin, DetailView):

@@ -15,6 +15,8 @@ from pathlib import Path
 
 from celery.schedules import crontab
 
+from .config import config
+
 # from django.conf.global_settings import LOGIN_URL
 
 # from django.conf.global_settings import LOGIN_REDIRECT_URL
@@ -90,8 +92,12 @@ WSGI_APPLICATION = "crm.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": config.DB.HOST,
+        "PORT": config.DB.PORT,
+        "USER": config.DB.POSTGRES_USER,
+        "PASSWORD": config.DB.POSTGRES_PASSWORD,
+        "NAME": config.DB.POSTGRES_DB,
     }
 }
 
