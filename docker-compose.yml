@@ -19,13 +19,14 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./crm/upload_files:/app/crm/upload_files
+      - ./crm/uploads:/app/crm/uploads
     depends_on:
       - postgres
       - redis
     restart: on-failure
     command: sh -c "
       python ./manage.py migrate &&
+      python ./manage.py create_entities &&
       python ./manage.py runserver 0.0.0.0:8000
       "
 

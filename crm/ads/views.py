@@ -68,6 +68,7 @@ class StatisticsView(LoginRequiredMixin, View):
                 product_id=ad.product_id
             ).values_list("pk", flat=True)
 
+            print("c_pk", contracts_pk)
             result = (
                 Customer.objects.filter(contract_id__in=contracts_pk)
                 .prefetch_related("contract")
@@ -82,7 +83,7 @@ class StatisticsView(LoginRequiredMixin, View):
                     "name": ad.name,
                     "leads_count": leads_count,
                     "customers_count": result.get("count"),
-                    "profit": result.get("summa") / ad.budget,
+                    "profit": round(result.get("summa") / ad.budget, 2),
                 }
             )
         return render(request, "ads/ads-statistic.html", context={"ads": ads})

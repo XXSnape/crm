@@ -2,7 +2,6 @@ import os
 import shutil
 
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView,
@@ -52,3 +51,8 @@ class ContractUpdateView(PermissionRequiredMixin, UpdateView):
     queryset = Contract.objects.select_related("product")
     fields = "__all__"
     template_name = "contracts/contracts-edit.html"
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        os.remove(self.get_object().file.path)
+        return super().form_valid(form)

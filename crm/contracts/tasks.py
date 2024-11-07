@@ -15,5 +15,3 @@ def archive_expired_contracts():
 @shared_task
 def x():
     print("create product")
-    Product.objects.create(name='name', description='d', cost=34.56)
-
