@@ -26,12 +26,21 @@ class DBSettings(BaseSettings):
         )
 
 
+class RedisSettings(BaseSettings):
+    REDIS_HOST: str
+
+    @property
+    def redis_url(self) -> str:
+        return f"redis://{self.REDIS_HOST}:6379/0"
+
+
 class Settings(BaseSettings):
     """
     Класс с настройками телеграма, api и базы данных
     """
 
     DB: DBSettings = DBSettings()
+    REDIS: RedisSettings = RedisSettings()
 
 
 config = Settings()

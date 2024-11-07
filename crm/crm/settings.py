@@ -162,12 +162,15 @@ LOGGING = {
     "loggers": {"django.db.backends": {"level": "DEBUG", "handlers": ["console"]}},
 }
 
-CELERY_ENABLE_UTC = True
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
-CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+CELERY_BROKER_URL = config.REDIS.redis_url
+CELERY_RESULT_BACKEND = config.REDIS.redis_url
 CELERY_BEAT_SCHEDULE = {
-    "create": {
+    "archive": {
         "task": "contracts.tasks.archive_expired_contracts",
         "schedule": crontab(minute="0", hour="0"),
-    }
+    },
+    'g': {
+        "task": "contracts.tasks.x",
+        "schedule": 10,
+    },
 }
