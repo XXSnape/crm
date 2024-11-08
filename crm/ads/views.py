@@ -1,10 +1,4 @@
-from decimal import Decimal
-
-from contracts.models import Contract
-from customers.models import Customer
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.db.models import Count, Sum
-from django.db.models.functions import Coalesce
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -16,9 +10,9 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
-from leads.models import Lead
 
 from .models import Ads
+from .service import get_statistic
 
 
 class AdsListView(PermissionRequiredMixin, ListView):
@@ -71,38 +65,10 @@ class StatisticsView(LoginRequiredMixin, View):
 
     def get(self, request: HttpRequest) -> HttpResponse:
         """
-        Проходится по всем рекламным компаниям,
-        считает клиентов, привлеченных компанией,
-        находит контракты, заключенные с услугой, которая заказывала рекламу,
-        делит стоимость всех подписанных контрактов на бюджет рекламы
+        Метод get для возврата статистики
 
         :param request: HttpRequest
         :return: HttpResponse
         """
-        ads_models = Ads.objects.select_related("product").all()
-        ads = []
-        for ad in ads_models:
-            leads_count = Lead.objects.filter(ad_id=ad.pk).aggregate(count=Count("pk"))[
-                "count"
-            ]
-            contracts_pk = Contract.objects.filter(
-                product_id=ad.product_id
-            ).values_list("pk", flat=True)
-            result = (
-                Customer.objects.filter(contract_id__in=contracts_pk)
-                .prefetch_related("contract")
-                .aggregate(
-                    count=Coalesce(Count("lead_id", distinct=True), 0),
-                    summa=Coalesce(Sum("contract__cost"), Decimal("0")),
-                )
-            )
-
-            ads.append(
-                {
-                    "name": ad.name,
-                    "leads_count": leads_count,
-                    "customers_count": result.get("count"),
-                    "profit": round(result.get("summa") / ad.budget, 2),
-                }
-            )
-        return render(request, "ads/ads-statistic.html", context={"ads": ads})
+        context = get_statistic()
+        return render(request, "ads/ads-statistic.html", context=context)

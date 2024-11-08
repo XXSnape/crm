@@ -90,4 +90,4 @@ class Contract(models.Model):
 
     def __str__(self) -> str:
         """Генерирует строку для отображения"""
-        return f"{self.name}"
+        return self.name

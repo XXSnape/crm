@@ -18,7 +18,6 @@ class ContractsAdmin(admin.ModelAdmin):
         "archived",
     )
     list_display_links = ("name",)
-    list_editable = ("cost", "end_date", "file", "product")
 
     def get_queryset(self, request: HttpRequest):
         return Contract.objects.select_related("product")

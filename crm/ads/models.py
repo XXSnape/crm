@@ -39,4 +39,4 @@ class Ads(models.Model):
 
     def __str__(self) -> str:
         """Генерирует строку для отображения"""
-        return f"({self.pk}) {self.name}"
+        return self.name

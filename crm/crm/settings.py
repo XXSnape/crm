@@ -149,18 +149,18 @@ LOGIN_REDIRECT_URL = "index"
 LOGOUT_REDIRECT_URL = "accounts:login"
 # LOGIN_URL = "accounts:login"
 
-LOGGING = {
-    "version": 1,
-    "filters": {"require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}},
-    "handlers": {
-        "console": {
-            "level": "DEBUG",
-            "filters": ["require_debug_true"],
-            "class": "logging.StreamHandler",
-        }
-    },
-    "loggers": {"django.db.backends": {"level": "DEBUG", "handlers": ["console"]}},
-}
+# LOGGING = {
+#     "version": 1,
+#     "filters": {"require_debug_true": {"()": "django.utils.log.RequireDebugTrue"}},
+#     "handlers": {
+#         "console": {
+#             "level": "DEBUG",
+#             "filters": ["require_debug_true"],
+#             "class": "logging.StreamHandler",
+#         }
+#     },
+#     "loggers": {"django.db.backends": {"level": "DEBUG", "handlers": ["console"]}},
+# }
 
 CELERY_BROKER_URL = config.REDIS.redis_url
 CELERY_RESULT_BACKEND = config.REDIS.redis_url
