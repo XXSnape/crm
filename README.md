@@ -31,7 +31,7 @@ ___
 * Убедитесь, что docker установлен на локальной машине ([Как установить Docker?](https://docs.docker.com/get-started/get-docker/))
 * Склонируйте репозиторий на локальную машину
 ```sh
-git https://github.com/XXSnape/CRM.git
+git clone https://github.com/XXSnape/crm.git
 ```
 
 * Создайте файл .env co своими данными или скопируйте все из .env_template
@@ -49,8 +49,8 @@ docker compose up
 
 #### HOST - Хост базы данных
 #### PORT - Порт базы данных
-#### POSTGRES_USER - Логин пользователя 
-#### POSTGRES_PASSWORD - Пароль пользователя
+#### POSTGRES_USER - Логин пользователя базы данных
+#### POSTGRES_PASSWORD - Пароль пользователя базы данных
 #### POSTGRES_DB - Название базы данных
 
 #### REDIS_HOST - Хост для редиса
@@ -58,9 +58,9 @@ docker compose up
 #### ADMIN_USERNAME - Логин админа
 #### ADMIN_PASSWORD - Пароль админа
 
-#### OPERATOR_USERNAME - логин оператора
-#### OPERATOR_PASSWORD - пароль оператора
-#### MARKETER_USERNAME - логин маркетолога
-#### MARKETER_PASSWORD - пароль маркетолога
-#### MANAGER_USERNAME - логин менеджера
-#### MANAGER_PASSWORD - пароль менеджера
+#### OPERATOR_USERNAME - Логин оператора
+#### OPERATOR_PASSWORD - Пароль оператора
+#### MARKETER_USERNAME - Логин маркетолога
+#### MARKETER_PASSWORD - Пароль маркетолога
+#### MANAGER_USERNAME - Логин менеджера
+#### MANAGER_PASSWORD - Пароль менеджера
